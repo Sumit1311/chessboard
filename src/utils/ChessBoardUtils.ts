@@ -1,6 +1,6 @@
-import { PossibleBlocksMovement } from "./enums/PossibleBlocksMovement";
-import { PossibleDirsEnum } from "./enums/PossibleMovement";
-import { BoardPosition } from "./parsers/BoardPosition";
+import { PossibleBlocksMovement } from "../enums/PossibleBlocksMovement";
+import { PossibleDirsEnum } from "../enums/PossibleMovement";
+import { BoardPosition } from "../parsers/BoardPosition";
 
 export default class ChessBoardUtils {
 

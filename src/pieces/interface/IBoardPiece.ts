@@ -1,4 +1,4 @@
-import ChessBoardUtils from "../../ChessBoardUtils";
+import ChessBoardUtils from "../../utils/ChessBoardUtils";
 import { PossibleBlocksMovement } from "../../enums/PossibleBlocksMovement";
 import { PossibleDirsEnum } from "../../enums/PossibleMovement";
 import { BoardPosition } from "../../parsers/BoardPosition";
