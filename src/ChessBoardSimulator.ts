@@ -1,32 +1,44 @@
+import ChessBoard from "./ChessBoard";
 import { BoardPosition } from "./parsers/BoardPosition";
 import InputParser from "./parsers/InputParser";
 import { ConsoleReader } from "./readers/ConsoleReader";
 import { IReader } from "./readers/IReader";
+import ConsoleWriter from "./writers/ConsoleWriter";
+import { IWriter } from "./writers/interfaces/IWriter";
 
 export class ChessBoardSimulator {
 
     private dataReader: IReader;
+    private dataWriter: IWriter;
 
-    constructor(dataReader?: IReader) {
+    constructor(dataReader: IReader, dataWriter: IWriter) {
         this.dataReader = dataReader || new ConsoleReader();
-    }
-
-    private getNextMove(input: string): Array<string> {
-
-        let pieceAndPosition = InputParser.parse(input);
-        return pieceAndPosition.piece
-            .getPossiblePositions(pieceAndPosition.position)
-            .map((pos: BoardPosition) => pos.toString());
-    }
-
-    printNextMoves(moves: Array<string>): void {
-        console.log(`Possible moves are : ${moves.join(",")}`);
+        this.dataWriter = dataWriter || new ConsoleWriter();
     }
 
     async run(): Promise<void> {
         let line;
+        let chessBoard = new ChessBoard();
         line = await this.dataReader.readNextLine();
-        this.printNextMoves(this.getNextMove(line));
+        let pieceAndPosition = InputParser.parse(line);
+        chessBoard.placePiece(pieceAndPosition);
+        let moves =
+            chessBoard.getNextPossibleMove()
+                .map((pos: BoardPosition) => pos.toString());
+        this.dataWriter.printArray(moves);
         this.dataReader.close();
+    }
+
+    static async start(): Promise<void> {
+        let simulator = new ChessBoardSimulator(
+            new ConsoleReader(),
+            new ConsoleWriter()
+        );
+        try {
+            await simulator.run();
+        } catch (err) {
+            console.log("Error occurred while running the simulation", err);
+            process.exit(1);
+        }
     }
 }

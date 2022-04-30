@@ -1,6 +1,7 @@
 import { ChessBoardSimulator } from "../src/ChessBoardSimulator";
 import Sinon from "sinon";
 import { ConsoleReader } from "../src/readers/ConsoleReader";
+import ConsoleWriter from "../src/writers/ConsoleWriter";
 
 describe("test chess board simulator", () => {
     describe("test cases for king", () => {
@@ -16,15 +17,18 @@ describe("test chess board simulator", () => {
                     close: Sinon.stub()
                 });
 
+                let writer = Sinon.createStubInstance(
+                    ConsoleWriter, {
+                    printArray: Sinon.stub<[Array<string>]>().callsFake((args: Array<string>): void => {
+                        expect(args.length).toBe(8);
+                        count--;
+                        if (count == 0)
+                            done();
+                    })
+                });
 
-                let simulator = new ChessBoardSimulator(reader);
-                Sinon.stub(simulator, "printNextMoves").callsFake((args) => {
-                    expect(args.length).toBe(8);
-                    count--;
-                    if (count == 0)
-                        done();
-                })
 
+                let simulator = new ChessBoardSimulator(reader, writer);
                 simulator.run();
             }
         });
@@ -40,14 +44,17 @@ describe("test chess board simulator", () => {
                     close: Sinon.stub()
                 });
 
-                let simulator = new ChessBoardSimulator(reader);
-                Sinon.stub(simulator, "printNextMoves").callsFake((args) => {
-                    expect(args.length).toBe(3);
-                    count--;
-                    if (count == 0)
-                        done();
-                })
+                let writer = Sinon.createStubInstance(
+                    ConsoleWriter, {
+                    printArray: Sinon.stub<[Array<string>]>().callsFake((args: Array<string>): void => {
+                        expect(args.length).toBe(3);
+                        count--;
+                        if (count == 0)
+                            done();
+                    })
+                });
 
+                let simulator = new ChessBoardSimulator(reader, writer);
                 simulator.run()
                     .catch(() => done(false));
             }
@@ -66,13 +73,17 @@ describe("test chess board simulator", () => {
                     close: Sinon.stub()
                 });
 
-                let simulator = new ChessBoardSimulator(reader);
-                Sinon.stub(simulator, "printNextMoves").callsFake((args) => {
-                    expect(args.length).toBe(5);
-                    count--;
-                    if (count == 0)
-                        done();
-                })
+                let writer = Sinon.createStubInstance(
+                    ConsoleWriter, {
+                    printArray: Sinon.stub<[Array<string>]>().callsFake((args: Array<string>): void => {
+                        expect(args.length).toBe(5);
+                        count--;
+                        if (count == 0)
+                            done();
+                    })
+                });
+
+                let simulator = new ChessBoardSimulator(reader, writer);
 
                 simulator.run()
                     .catch(() => done(false));
@@ -90,13 +101,17 @@ describe("test chess board simulator", () => {
                     close: Sinon.stub()
                 });
 
-                let simulator = new ChessBoardSimulator(reader);
-                Sinon.stub(simulator, "printNextMoves").callsFake((args) => {
-                    // expect(args.length).toBe(0);
-                    // count--;
-                    // if (count == 0)
-                    //     done();
-                })
+                let writer = Sinon.createStubInstance(
+                    ConsoleWriter, {
+                    printArray: Sinon.stub<[Array<string>]>().callsFake((args: Array<string>): void => {
+                        // expect(args.length).toBe(5);
+                        // count--;
+                        // if (count == 0)
+                        //     done();
+                    })
+                });
+
+                let simulator = new ChessBoardSimulator(reader, writer);
 
                 simulator.run()
                     .catch((err) => {
@@ -112,17 +127,17 @@ describe("test chess board simulator", () => {
         let piece = "queen";
         it("should return correct number of moves for middle positions", (done) => {
             let positions = [{
-                "position" : "E4",
-                "expected" : 27
-            },{
-                "position" : "C6",
-                "expected" : 25
-            },{
-                "position" : "G2",
-                "expected" : 23
-            },{
-                "position" : "G5",
-                "expected" : 23
+                "position": "E4",
+                "expected": 27
+            }, {
+                "position": "C6",
+                "expected": 25
+            }, {
+                "position": "G2",
+                "expected": 23
+            }, {
+                "position": "G5",
+                "expected": 23
             }];
             let count = 0;
 
@@ -134,13 +149,17 @@ describe("test chess board simulator", () => {
                 });
 
 
-                let simulator = new ChessBoardSimulator(reader);
-                Sinon.stub(simulator, "printNextMoves").callsFake((args) => {
-                    expect(args.length).toBe(positions[count].expected);
-                    count++;
-                    if (count == positions.length)
-                        done();
-                })
+                let writer = Sinon.createStubInstance(
+                    ConsoleWriter, {
+                    printArray: Sinon.stub<[Array<string>]>().callsFake((args: Array<string>): void => {
+                        expect(args.length).toBe(positions[count].expected);
+                        count++;
+                        if (count == positions.length)
+                            done();
+                    })
+                });
+
+                let simulator = new ChessBoardSimulator(reader, writer);
 
                 simulator.run();
             }
@@ -157,14 +176,17 @@ describe("test chess board simulator", () => {
                     close: Sinon.stub()
                 });
 
-                let simulator = new ChessBoardSimulator(reader);
-                Sinon.stub(simulator, "printNextMoves").callsFake((args) => {
-                    expect(args.length).toBe(21);
-                    count--;
-                    if (count == 0)
-                        done();
-                })
+                let writer = Sinon.createStubInstance(
+                    ConsoleWriter, {
+                    printArray: Sinon.stub<[Array<string>]>().callsFake((args: Array<string>): void => {
+                        expect(args.length).toBe(21);
+                        count--;
+                        if (count == 0)
+                            done();
+                    })
+                });
 
+                let simulator = new ChessBoardSimulator(reader, writer);
                 simulator.run()
                     .catch(() => done(false));
             }
@@ -174,23 +196,23 @@ describe("test chess board simulator", () => {
 
         it("should return 21 moves for borders", (done) => {
             let positions = [{
-                "position" : "B8",
-                "expected" : 21
-            },{
-                "position" : "e8",
-                "expected" : 21
-            },{
-                "position" : "h4",
-                "expected" : 21
-            },{
-                "position" : "g1",
-                "expected" : 21
-            },{
-                "position" : "b1",
-                "expected" : 21
-            },{
-                "position" : "a4",
-                "expected" : 21
+                "position": "B8",
+                "expected": 21
+            }, {
+                "position": "e8",
+                "expected": 21
+            }, {
+                "position": "h4",
+                "expected": 21
+            }, {
+                "position": "g1",
+                "expected": 21
+            }, {
+                "position": "b1",
+                "expected": 21
+            }, {
+                "position": "a4",
+                "expected": 21
             }];
             let count = 0;
 
@@ -202,13 +224,17 @@ describe("test chess board simulator", () => {
                 });
 
 
-                let simulator = new ChessBoardSimulator(reader);
-                Sinon.stub(simulator, "printNextMoves").callsFake((args) => {
-                    expect(args.length).toBe(positions[count].expected);
-                    count++;
-                    if (count == positions.length)
-                        done();
-                })
+                let writer = Sinon.createStubInstance(
+                    ConsoleWriter, {
+                    printArray: Sinon.stub<[Array<string>]>().callsFake((args: Array<string>): void => {
+                        expect(args.length).toBe(positions[count].expected);
+                        count++;
+                        if (count == positions.length)
+                            done();
+                    })
+                });
+
+                let simulator = new ChessBoardSimulator(reader, writer);
 
                 simulator.run();
             }
@@ -225,13 +251,17 @@ describe("test chess board simulator", () => {
                     close: Sinon.stub()
                 });
 
-                let simulator = new ChessBoardSimulator(reader);
-                Sinon.stub(simulator, "printNextMoves").callsFake((args) => {
-                    // expect(args.length).toBe(0);
-                    // count--;
-                    // if (count == 0)
-                    //     done();
-                })
+                let writer = Sinon.createStubInstance(
+                    ConsoleWriter, {
+                    printArray: Sinon.stub<[Array<string>]>().callsFake((args: Array<string>): void => {
+                        // expect(args.length).toBe(positions[count].expected);
+                        // count++;
+                        // if (count == positions.length)
+                        //     done();
+                    })
+                });
+
+                let simulator = new ChessBoardSimulator(reader, writer);
 
                 simulator.run()
                     .catch((err) => {
@@ -256,14 +286,17 @@ describe("test chess board simulator", () => {
                     close: Sinon.stub()
                 });
 
+                let writer = Sinon.createStubInstance(
+                    ConsoleWriter, {
+                    printArray: Sinon.stub<[Array<string>]>().callsFake((args: Array<string>): void => {
+                        expect(args.length).toBe(1);
+                        count--;
+                        if (count == 0)
+                            done();
+                    })
+                });
 
-                let simulator = new ChessBoardSimulator(reader);
-                Sinon.stub(simulator, "printNextMoves").callsFake((args) => {
-                    expect(args.length).toBe(1);
-                    count--;
-                    if (count == 0)
-                        done();
-                })
+                let simulator = new ChessBoardSimulator(reader, writer);
 
                 simulator.run();
             }
@@ -280,18 +313,23 @@ describe("test chess board simulator", () => {
                     close: Sinon.stub()
                 });
 
-                let simulator = new ChessBoardSimulator(reader);
-                Sinon.stub(simulator, "printNextMoves").callsFake((args) => {
-                    expect(args.length).toBe(0);
-                    count--;
-                    if (count == 0)
-                        done();
-                })
+                let writer = Sinon.createStubInstance(
+                    ConsoleWriter, {
+                    printArray: Sinon.stub<[Array<string>]>().callsFake((args: Array<string>): void => {
+                        expect(args.length).toBe(0);
+                        count--;
+                        if (count == 0)
+                            done();
+                    })
+                });
+
+                let simulator = new ChessBoardSimulator(reader, writer);
 
                 simulator.run()
                     .catch((err) => {
                         console.log(err);
-                        done(false)});
+                        done(false)
+                    });
             }
 
 
@@ -308,18 +346,23 @@ describe("test chess board simulator", () => {
                     close: Sinon.stub()
                 });
 
-                let simulator = new ChessBoardSimulator(reader);
-                Sinon.stub(simulator, "printNextMoves").callsFake((args) => {
-                    expect(args.length).toBe(1);
-                    count--;
-                    if (count == 0)
-                        done();
-                })
+                let writer = Sinon.createStubInstance(
+                    ConsoleWriter, {
+                    printArray: Sinon.stub<[Array<string>]>().callsFake((args: Array<string>): void => {
+                        expect(args.length).toBe(1);
+                        count--;
+                        if (count == 0)
+                            done();
+                    })
+                });
+
+                let simulator = new ChessBoardSimulator(reader, writer);
 
                 simulator.run()
                     .catch((err) => {
                         console.log(err);
-                        done(false)});
+                        done(false)
+                    });
             }
 
 
@@ -335,14 +378,16 @@ describe("test chess board simulator", () => {
                     readNextLine: Promise.resolve(`${piece}, ${pos}`),
                     close: Sinon.stub()
                 });
-
-                let simulator = new ChessBoardSimulator(reader);
-                Sinon.stub(simulator, "printNextMoves").callsFake((args) => {
-                    expect(args.length).toBe(0);
-                    count--;
-                    if (count == 0)
-                        done();
-                })
+                let writer = Sinon.createStubInstance(
+                    ConsoleWriter, {
+                    printArray: Sinon.stub<[Array<string>]>().callsFake((args: Array<string>): void => {
+                        expect(args.length).toBe(0);
+                        count--;
+                        if (count == 0)
+                            done();
+                    })
+                });
+                let simulator = new ChessBoardSimulator(reader, writer);
 
                 simulator.run()
                     .catch(() => done(false));
@@ -360,13 +405,18 @@ describe("test chess board simulator", () => {
                     close: Sinon.stub()
                 });
 
-                let simulator = new ChessBoardSimulator(reader);
-                Sinon.stub(simulator, "printNextMoves").callsFake((args) => {
-                    expect(args.length).toBe(1);
-                    count--;
-                    if (count == 0)
-                        done();
-                })
+
+                let writer = Sinon.createStubInstance(
+                    ConsoleWriter, {
+                    printArray: Sinon.stub<[Array<string>]>().callsFake((args: Array<string>): void => {
+                        expect(args.length).toBe(1);
+                        count--;
+                        if (count == 0)
+                            done();
+                    })
+                });
+
+                let simulator = new ChessBoardSimulator(reader, writer);
 
                 simulator.run()
                     .catch(() => done(false));
@@ -384,13 +434,17 @@ describe("test chess board simulator", () => {
                     close: Sinon.stub()
                 });
 
-                let simulator = new ChessBoardSimulator(reader);
-                Sinon.stub(simulator, "printNextMoves").callsFake((args) => {
-                    // expect(args.length).toBe(0);
-                    // count--;
-                    // if (count == 0)
-                    //     done();
-                })
+                let writer = Sinon.createStubInstance(
+                    ConsoleWriter, {
+                    printArray: Sinon.stub<[Array<string>]>().callsFake((args: Array<string>): void => {
+                        // expect(args.length).toBe(1);
+                        // count--;
+                        // if (count == 0)
+                        //     done();
+                    })
+                });
+
+                let simulator = new ChessBoardSimulator(reader, writer);
 
                 simulator.run()
                     .catch((err) => {
