@@ -19,18 +19,4 @@ export class BoardPiece {
     getNumberOfPlaces(): PossibleBlocksMovement {
         return this.numberOfPlaces;
     }
-
-    getPossiblePositions(currPos: BoardPosition): Array<BoardPosition> {
-        let boardPositions: Array<BoardPosition> = [];
-
-        for (let dir of this.possibleDirs) {
-            boardPositions = boardPositions.concat(ChessBoardUtils.getPossiblePositions(
-                currPos,
-                dir,
-                this.numberOfPlaces
-            ));
-        }
-
-        return boardPositions;
-    }
 }

@@ -7,3 +7,4 @@
 
 # TODO
 1. Add the test cases with actual moves listed
+2. Extend to have state for chess board class with each added pieces
