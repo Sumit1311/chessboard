@@ -21,9 +21,12 @@ export class ChessBoardSimulator {
         let chessBoard = new ChessBoard();
         line = await this.dataReader.readNextLine();
         let pieceAndPosition = InputParser.parse(line);
-        chessBoard.placePiece(pieceAndPosition);
+        for(let p of pieceAndPosition){
+            chessBoard.placePiece(p);
+        }
+        
         let moves =
-            chessBoard.getNextPossibleMove()
+            chessBoard.getNextPossibleMove(pieceAndPosition[0])
                 .map((pos: BoardPosition) => pos.toString());
         this.dataWriter.printArray(moves);
         this.dataReader.close();

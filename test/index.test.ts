@@ -125,26 +125,32 @@ describe("test chess board simulator", () => {
 
     describe("test cases for queen", () => {
         let piece = "queen";
-        it("should return correct number of moves for middle positions", (done) => {
+        it.only("should return correct number of moves for middle positions", (done) => {
             let positions = [{
                 "position": "E4",
-                "expected": 27
-            }, {
-                "position": "C6",
+                "opp_position": "C4",
                 "expected": 25
-            }, {
-                "position": "G2",
-                "expected": 23
-            }, {
-                "position": "G5",
-                "expected": 23
-            }];
+            },{
+                "position": "E4",
+                "opp_position": "C6",
+                "expected": 25
+            } //{
+            //     "position": "C6",
+            //     "expected": 25
+            // }, {
+            //     "position": "G2",
+            //     "expected": 23
+            // }, {
+            //     "position": "G5",
+            //     "expected": 23
+            // }
+        ];
             let count = 0;
 
             for (let pos of positions) {
                 let reader = Sinon.createStubInstance(
                     ConsoleReader, {
-                    readNextLine: Promise.resolve(`${piece}, ${pos.position}`),
+                    readNextLine: Promise.resolve(`${piece}, ${pos.position}, ${pos.opp_position}`),
                     close: Sinon.stub()
                 });
 
